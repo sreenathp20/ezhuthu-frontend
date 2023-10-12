@@ -7,6 +7,7 @@ import { CreateUserComponent } from './create-user/create-user.component';
 import { LotteryComponent } from './lottery/lottery.component';
 
 const routes: Routes = [
+  { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
   { path: 'create-lottery', component: CreateLotteryComponent },
