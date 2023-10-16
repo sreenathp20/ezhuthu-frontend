@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { CreateLotteryComponent } from './create-lottery/create-lottery.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { LotteryComponent } from './lottery/lottery.component';
+import { PriceComponent } from './price/price.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'create-lottery', component: CreateLotteryComponent },
   { path: 'lottery', component: LotteryComponent },
   { path: 'create-user', component: CreateUserComponent },
+  { path: 'price', component: PriceComponent },
 ];
 
 @NgModule({

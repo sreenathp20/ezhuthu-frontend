@@ -36,6 +36,9 @@ export class CreateLotteryComponent implements OnInit {
   rateControl: any;
   selectedUser: any;
   lotteries: any = [];
+  ABGroup: any = [];
+  AGroup: any = [];
+  usersDict:any = {};
 
   getLotteries() {
     this.dataService.getLotteries().subscribe(data =>{
@@ -57,22 +60,84 @@ export class CreateLotteryComponent implements OnInit {
     this.dataService.getUsers().subscribe(data =>{
       if(data.length > 0){
           this.users = data;
+          for(let i = 0; i < this.users.length; i++) {
+            let user = this.users[i];
+            this.usersDict[user['_id']] = user['name']
+          }
+
       } 
     })
     this.getLotteries();
     
   }
+  boxDisplayedColumns: string[] = ['number', 'count', 'set', 'name'];
   displayedColumns: string[] = ['number', 'count', 'set', 'name', 'date'];
   dataSource = this.lotteries;
+  boxDataSource: any = [];
 
   selectUser(id: any) {
     this.selectedUser = id;
 
   }
 
+  setType() {
+    this.ABGroup = [];
+    this.AGroup = [];
+  }
+
+  boxPreview() {
+    if(this.AGroup.length > 0 || this.ABGroup.length > 0) {
+      this.type = '';
+    }
+    this.boxDataSource = [];
+    if(this.number.toString().length == 3 && this.type == 'box') {
+      let A = this.number.toString()[0];
+      let B = this.number.toString()[1];
+      let C = this.number.toString()[2];
+      let data: any = [];
+      if(!(data.includes(A+B+C))) {
+        data.push(A+B+C);
+        this.boxDataSource.push({number: A+B+C, count: this.count, set: 'ABC', name: this.usersDict[this.selectedUser]})
+      }
+      if(!(data.includes(A+C+B))) {
+        data.push(A+C+B);
+        this.boxDataSource.push({number: A+C+B, count: this.count, set: 'ABC', name: this.usersDict[this.selectedUser]})
+      }
+      if(!(data.includes(B+A+C))) {
+        data.push(B+A+C);
+        this.boxDataSource.push({number: B+A+C, count: this.count, set: 'ABC', name: this.usersDict[this.selectedUser]})
+      }
+      if(!(data.includes(B+C+A))) {
+        data.push(B+C+A);
+        this.boxDataSource.push({number: B+C+A, count: this.count, set: 'ABC', name: this.usersDict[this.selectedUser]})
+      }
+      if(!(data.includes(C+A+B))) {
+        data.push(C+A+B);
+        this.boxDataSource.push({number: C+A+B, count: this.count, set: 'ABC', name: this.usersDict[this.selectedUser]})
+      }
+      if(!(data.includes(C+B+A))) {
+        data.push(C+B+A);
+        this.boxDataSource.push({number: C+B+A, count: this.count, set: 'ABC', name: this.usersDict[this.selectedUser]})
+      }
+      
+    }
+  }
+
   createLottery(): boolean {
+    if(!this.number) {
+      alert("Please enter Number")
+      return false;
+    }
     if(this.type == 'set'  && this.number.toString().length != 3) {
       alert("Number length is wrong for set")
+      return false;
+    }
+    if(this.AGroup.length > 0  && this.number.toString().length != 1) {
+      alert("Number length is wrong for selection")
+      return false;
+    }
+    if(this.ABGroup.length > 0  && this.number.toString().length != 2) {
+      alert("Number length is wrong for selection")
       return false;
     }
     if(this.type == 'box' && (this.boxGroup == 'A' || this.boxGroup == 'B' || this.boxGroup == 'B') && this.number.toString().length != 1 ) {
@@ -83,8 +148,8 @@ export class CreateLotteryComponent implements OnInit {
       alert("please enter a number between 0 and 999");
       return false;
     }
-    if (parseInt(this.count) > 500) {
-      alert("please enter a number between 0 and 500 for count");
+    if (parseInt(this.count) > 2000) {
+      alert("please enter a number between 0 and 2000 for count");
       return false;
     }
     if(this.count == '' || !this.count) {
@@ -100,18 +165,36 @@ export class CreateLotteryComponent implements OnInit {
       return false;
     }
     let set;
+    let data = [];
     if(this.type == 'set'){
       set = 'ABC';
-    }else {
-      set = this.boxGroup;
+      data = [{number: this.number, count: this.count, set: set, user: this.selectedUser}]
+    }else if(this.type == 'box') {
+      for(let i = 0; i < this.boxDataSource.length; i++) {
+        let b = this.boxDataSource[i];
+        data.push({number: b.number, count: b.count, set: b.set, user: this.selectedUser})
+      }
+    }else if(this.type == '') {
+      for(let i = 0; i < this.AGroup.length; i++) {
+        let g = this.AGroup[i];
+        data.push({number: this.number, count: this.count, set: g, user: this.selectedUser})
+      }
+      for(let i = 0; i < this.ABGroup.length; i++) {
+        let g = this.ABGroup[i];
+        data.push({number: this.number, count: this.count, set: g, user: this.selectedUser})
+      }
     }
-    let data = {number: this.number, count: this.count, set: set, user: this.selectedUser}
+    console.log(data);
     this.dataService.createLottery({data}).subscribe(data =>{
       if(data.success){
         this.number = '';
         this.count = '';
         this.selectedUser = undefined;
         this.getLotteries();
+        this.boxDataSource = [];
+        this.type = '';
+        this.AGroup = [];
+        this.ABGroup = [];
         
       } else {
       }

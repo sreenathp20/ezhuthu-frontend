@@ -46,6 +46,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import { CreateUserComponent } from './create-user/create-user.component';
 
 import {MatNativeDateModule} from '@angular/material/core';
+import { PriceComponent } from './price/price.component';
 
 
 
@@ -59,7 +60,8 @@ import {MatNativeDateModule} from '@angular/material/core';
     MenuComponent,
     LotteryComponent,
     CreateLotteryComponent,
-    CreateUserComponent
+    CreateUserComponent,
+    PriceComponent
   ],
   imports: [
     MatGridListModule,
