@@ -148,8 +148,8 @@ export class CreateLotteryComponent implements OnInit {
       alert("please enter a number between 0 and 999");
       return false;
     }
-    if (parseInt(this.count) > 2000) {
-      alert("please enter a number between 0 and 2000 for count");
+    if (parseInt(this.count) > 200) {
+      alert("please enter a number between 1 and 200 for count");
       return false;
     }
     if(this.count == '' || !this.count) {
@@ -197,6 +197,7 @@ export class CreateLotteryComponent implements OnInit {
         this.ABGroup = [];
         
       } else {
+        alert(data.message)
       }
     })
     return true;
