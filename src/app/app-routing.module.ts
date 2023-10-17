@@ -6,6 +6,7 @@ import { CreateLotteryComponent } from './create-lottery/create-lottery.componen
 import { CreateUserComponent } from './create-user/create-user.component';
 import { LotteryComponent } from './lottery/lottery.component';
 import { PriceComponent } from './price/price.component';
+import { CreatePriceComponent } from './create-price/create-price.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'lottery', component: LotteryComponent },
   { path: 'create-user', component: CreateUserComponent },
   { path: 'price', component: PriceComponent },
+  { path: 'create-price', component: CreatePriceComponent },
 ];
 
 @NgModule({

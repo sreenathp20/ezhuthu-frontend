@@ -48,7 +48,7 @@ export class LotteryComponent implements OnInit {
     this.getCurrentDate();
     
   }
-  displayedColumns: string[] = ['number', 'count', 'set', 'name', 'date'];
+  displayedColumns: string[] = ['number', 'count', 'set', 'name', 'date', 'price'];
   dataSource = this.lotteries;
 
   getCurrentDate() {

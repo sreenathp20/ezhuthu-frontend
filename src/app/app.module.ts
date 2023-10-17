@@ -47,6 +47,7 @@ import { CreateUserComponent } from './create-user/create-user.component';
 
 import {MatNativeDateModule} from '@angular/material/core';
 import { PriceComponent } from './price/price.component';
+import { CreatePriceComponent } from './create-price/create-price.component';
 
 
 
@@ -61,7 +62,8 @@ import { PriceComponent } from './price/price.component';
     LotteryComponent,
     CreateLotteryComponent,
     CreateUserComponent,
-    PriceComponent
+    PriceComponent,
+    CreatePriceComponent
   ],
   imports: [
     MatGridListModule,

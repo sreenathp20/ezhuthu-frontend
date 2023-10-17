@@ -33,10 +33,19 @@ export class DataService {
     return this.http.get(apiUrl + '/users/', opts); 
 
   }
+  getPrice(): Observable<any> {
+    let opts = this.getHeader();
+    return this.http.get(apiUrl + '/price/', opts); 
+
+  }
 
   createLottery(data:any): Observable<any>{
     let opts = this.getHeader();
     return this.http.post(apiUrl + '/lottery/', data, opts);  
+  }
+  createPrice(data:any): Observable<any>{
+    let opts = this.getHeader();
+    return this.http.post(apiUrl + '/price/', data, opts);  
   }
   createUser(data:any): Observable<any>{
     let opts = this.getHeader();
