@@ -5,7 +5,7 @@
     <button mat-menu-item (click)="navigate('lottery')">Lottery</button>
   <button mat-menu-item (click)="navigate('create-lottery')">Create Lottery</button>
   <button mat-menu-item (click)="navigate('create-user')">Create User</button>
-  <button mat-menu-item (click)="navigate('price')" *ngIf="user.username=='admin'">Price</button>
+  <!-- <button mat-menu-item (click)="navigate('price')" *ngIf="user.username=='admin'">Price</button> -->
   <button mat-menu-item (click)="navigate('create-price')" *ngIf="user.username=='admin'">Create Price</button>
   <button mat-menu-item (click)="logout()">Logout</button>
   
