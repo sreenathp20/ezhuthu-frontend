@@ -80,6 +80,8 @@ export class CreateLotteryComponent implements OnInit {
   displayedColumns: string[] = ['number', 'count', 'set', 'name', 'date'];
   dataSource = this.lotteries;
   boxDataSource: any = [];
+  drafts: any = [];
+  draftsDataSource:any = [];
 
   selectUser(id: any) {
     this.selectedUser = id;
@@ -129,18 +131,13 @@ export class CreateLotteryComponent implements OnInit {
     }
   }
 
-  createLottery(): boolean {
-    if(this.number == '0') {
-
-    }else {
-      if(!this.number) {
-        alert("Please enter Number")
-        return false;
-      }
+  enter(): boolean {
+    if(!this.selectedUser) {
+      alert("Please select user");
+      return false;
     }
-    
-    if(this.type == 'set'  && this.number.toString().length != 3) {
-      alert("Number length is wrong for set")
+    if(!this.type && this.AGroup.length == 0 && this.ABGroup.length == 0) {
+      alert("Please select group, set or box");
       return false;
     }
     if(this.AGroup.length > 0  && this.number.toString().length != 1) {
@@ -151,8 +148,8 @@ export class CreateLotteryComponent implements OnInit {
       alert("Number length is wrong for selection")
       return false;
     }
-    if(this.type == 'box' && (this.boxGroup == 'A' || this.boxGroup == 'B' || this.boxGroup == 'B') && this.number.toString().length != 1 ) {
-      alert("Number length is wrong for box group :" + this.boxGroup)
+    if(this.type == 'set'  && this.number.toString().length != 3) {
+      alert("Number length is wrong for set")
       return false;
     }
     if (parseInt(this.number) > 999) {
@@ -163,43 +160,115 @@ export class CreateLotteryComponent implements OnInit {
       alert("please enter a number between 1 and 200 for count");
       return false;
     }
-    if(this.count == '' || !this.count) {
-      alert("Please enter count")
-      return false;
-    }
-    if(this.number == '0') {
-
-    }else {
-      if(this.number == '' || !this.number) {
-        alert("Please enter number")
-        return false;
-      }
-    }
-    
-    if(!this.selectedUser) {
-      alert("Please select user")
-      return false;
-    }
-    let set;
-    let data = [];
+    // if(this.boxDataSource.length > 0) {
+    //   for(let i = 0; i < this.boxDataSource.length; i++) {
+    //     let item = this.boxDataSource[i];
+    //     this.drafts.push({number: item.number, count: item.count, set: item.set, name: this.selectedUser})
+    //   }
+    // }
     if(this.type == 'set'){
-      set = 'ABC';
-      data = [{number: this.number, count: this.count, set: set, user: this.selectedUser}]
+      let set = 'ABC';
+      this.drafts.push({number: this.number, count: this.count, set: set, name: this.usersDict[this.selectedUser], user: this.selectedUser})
     }else if(this.type == 'box') {
       for(let i = 0; i < this.boxDataSource.length; i++) {
         let b = this.boxDataSource[i];
-        data.push({number: b.number, count: b.count, set: b.set, user: this.selectedUser})
+        this.drafts.push({number: b.number, count: b.count, set: b.set, name: this.usersDict[this.selectedUser], user: this.selectedUser})
       }
     }else if(this.type == '') {
       for(let i = 0; i < this.AGroup.length; i++) {
         let g = this.AGroup[i];
-        data.push({number: this.number, count: this.count, set: g, user: this.selectedUser})
+        this.drafts.push({number: this.number, count: this.count, set: g, name: this.usersDict[this.selectedUser], user: this.selectedUser})
       }
       for(let i = 0; i < this.ABGroup.length; i++) {
         let g = this.ABGroup[i];
-        data.push({number: this.number, count: this.count, set: g, user: this.selectedUser})
+        this.drafts.push({number: this.number, count: this.count, set: g, name: this.usersDict[this.selectedUser], user: this.selectedUser})
       }
     }
+
+    this.number = '';
+    this.count = '';
+    document?.getElementById("number")?.focus();
+    this.boxDataSource = [];
+    this.draftsDataSource = [...this.drafts];
+    return true;
+  }
+
+  createLottery(): boolean {
+    // if(this.number == '0') {
+
+    // }else {
+    //   if(!this.number) {
+    //     alert("Please enter Number")
+    //     return false;
+    //   }
+    // }
+    
+    // if(this.type == 'set'  && this.number.toString().length != 3) {
+    //   alert("Number length is wrong for set")
+    //   return false;
+    // }
+    // if(this.AGroup.length > 0  && this.number.toString().length != 1) {
+    //   alert("Number length is wrong for selection")
+    //   return false;
+    // }
+    // if(this.ABGroup.length > 0  && this.number.toString().length != 2) {
+    //   alert("Number length is wrong for selection")
+    //   return false;
+    // }
+    // if(this.type == 'box' && (this.boxGroup == 'A' || this.boxGroup == 'B' || this.boxGroup == 'B') && this.number.toString().length != 1 ) {
+    //   alert("Number length is wrong for box group :" + this.boxGroup)
+    //   return false;
+    // }
+    // if (parseInt(this.number) > 999) {
+    //   alert("please enter a number between 0 and 999");
+    //   return false;
+    // }
+    // if (parseInt(this.count) > 200) {
+    //   alert("please enter a number between 1 and 200 for count");
+    //   return false;
+    // }
+    // if(this.count == '' || !this.count) {
+    //   alert("Please enter count")
+    //   return false;
+    // }
+    // if(this.number == '0') {
+
+    // }else {
+    //   if(this.number == '' || !this.number) {
+    //     alert("Please enter number")
+    //     return false;
+    //   }
+    // }
+    
+    // if(!this.selectedUser) {
+    //   alert("Please select user")
+    //   return false;
+    // }
+    let set;
+    let data:any = [];
+    // if(this.type == 'set'){
+    //   set = 'ABC';
+    //   data = [{number: this.number, count: this.count, set: set, user: this.selectedUser}]
+    // }else if(this.type == 'box') {
+    //   for(let i = 0; i < this.boxDataSource.length; i++) {
+    //     let b = this.boxDataSource[i];
+    //     data.push({number: b.number, count: b.count, set: b.set, user: this.selectedUser})
+    //   }
+    // }else if(this.type == '') {
+    //   for(let i = 0; i < this.AGroup.length; i++) {
+    //     let g = this.AGroup[i];
+    //     data.push({number: this.number, count: this.count, set: g, user: this.selectedUser})
+    //   }
+    //   for(let i = 0; i < this.ABGroup.length; i++) {
+    //     let g = this.ABGroup[i];
+    //     data.push({number: this.number, count: this.count, set: g, user: this.selectedUser})
+    //   }
+    // }
+    for(let i = 0; i < this.draftsDataSource.length; i++) {
+      let b = this.draftsDataSource[i];
+      data.push({number: b.number, count: b.count, set: b.set, user: b.user});
+    }
+
     console.log(data);
     this.dataService.createLottery({data}).subscribe(data =>{
       if(data.success){
@@ -211,6 +280,8 @@ export class CreateLotteryComponent implements OnInit {
         this.type = '';
         this.AGroup = [];
         this.ABGroup = [];
+        this.drafts = [];
+        this.draftsDataSource = [...this.drafts]
         
       } else {
         alert(data.message)

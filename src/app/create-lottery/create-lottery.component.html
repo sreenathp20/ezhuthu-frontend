@@ -8,51 +8,53 @@
   </mat-card>
   <mat-card>
     <mat-card-content>
+      <mat-form-field [style.width.%]="30">
+        <mat-label>User</mat-label>
+        <mat-select [(ngModel)]="selectedUser" (selectionChange)="boxPreview()">
+          <mat-option [value]="user._id" *ngFor="let user of users" >{{user.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field [style.width.%]="25">
+        <mat-label>A,B,C</mat-label>
+        <mat-select  multiple [(ngModel)]="AGroup" (selectionChange)="boxPreview()">
+          <mat-option *ngFor="let topping of ['A','B','C']" [value]="topping">{{topping}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field [style.width.%]="25" >
+        <mat-label>AB,AC,BC</mat-label>
+        <mat-select  multiple [(ngModel)]="ABGroup" (selectionChange)="boxPreview()">
+          <mat-option *ngFor="let topping of ['AB','AC','BC']" [value]="topping">{{topping}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br/>
+      <mat-radio-group aria-label="Select an option" [(ngModel)]="type" (change)="setType();boxPreview();">
+        <mat-radio-button value="set">Set</mat-radio-button>
+        <mat-radio-button value="box">Box</mat-radio-button>
+      </mat-radio-group>
+      <br/>
         <mat-form-field [style.width.%]="20">
             <mat-label >Number</mat-label>
-            <input matInput [(ngModel)]="number" maxlength="3" type="number" (change)="boxPreview();" (ngModelChange)="autoFocus();">
+            <input matInput [(ngModel)]="number" maxlength="3" type="number"  id="number" (ngModelChange)="autoFocus();boxPreview();">
           </mat-form-field>
           <mat-form-field [style.width.%]="20">
             <mat-label >Count</mat-label>
-            <input matInput [(ngModel)]="count" maxlength="4" type="number" (change)="boxPreview()" id="count">
+            <input matInput [(ngModel)]="count" maxlength="4" type="number" (ngModelChange)="boxPreview()" id="count" (keydown.enter)="enter()">
           </mat-form-field>
-          <mat-form-field>
-            <mat-label>User</mat-label>
-            <mat-select [(ngModel)]="selectedUser" (selectionChange)="boxPreview()">
-              <mat-option [value]="user._id" *ngFor="let user of users" >{{user.name}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field [style.width.%]="25">
-            <mat-label>A,B,C</mat-label>
-            <mat-select  multiple [(ngModel)]="AGroup" (selectionChange)="boxPreview()">
-              <mat-option *ngFor="let topping of ['A','B','C']" [value]="topping">{{topping}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field [style.width.%]="25" >
-            <mat-label>AB,AC,BC</mat-label>
-            <mat-select  multiple [(ngModel)]="ABGroup" (change)="boxPreview()">
-              <mat-option *ngFor="let topping of ['AB','AC','BC']" [value]="topping">{{topping}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-radio-group aria-label="Select an option" [(ngModel)]="type" (change)="setType();boxPreview();">
-            <mat-radio-button value="set">Set</mat-radio-button>
-            <mat-radio-button value="box">Box</mat-radio-button>
-          </mat-radio-group>
-          <!-- <mat-form-field [style.width.%]="40" *ngIf="type == 'box'">
-            <mat-label>Box Group</mat-label>
-            <mat-select [(ngModel)]="boxGroup">
-              <mat-option value="A">A</mat-option>
-              <mat-option value="B">B</mat-option>
-              <mat-option value="C">C</mat-option>
-              <mat-option value="AB">AB</mat-option>
-              <mat-option value="AC">AC</mat-option>
-              <mat-option value="BC">BC</mat-option>
-            </mat-select>
-          </mat-form-field> -->
+          <!-- <mat-card>
+            <mat-card-content>
+                <button mat-flat-button color="primary" (click)="createLottery()">Go</button>
+            </mat-card-content>
+          </mat-card> -->
+          
           
     </mat-card-content>
   </mat-card>
-  <mat-card *ngIf="type == 'box'">
+  <mat-card *ngIf="type == 'box' && boxDataSource.length > 0">
+    <mat-card-header>
+      <mat-card-title>Box</mat-card-title>
+    </mat-card-header>
+  </mat-card>
+  <mat-card *ngIf="type == 'box' && boxDataSource.length > 0">
     <table mat-table [dataSource]="boxDataSource" class="mat-elevation-z8">
       <ng-container matColumnDef="number">
         <th mat-header-cell *matHeaderCellDef> Number. </th>
@@ -83,21 +85,61 @@
 
     </table>
   </mat-card>
-  <mat-card>
+  <!-- <mat-card>
     <mat-card-content>
         <button mat-flat-button color="primary" (click)="createLottery()">Create</button>
     </mat-card-content>
+  </mat-card> -->
+  <mat-card *ngIf="draftsDataSource.length > 0">
+    <mat-card-header>
+      <mat-card-title>Drafts</mat-card-title>
+    </mat-card-header>
+  </mat-card>
+  <mat-card *ngIf="draftsDataSource.length > 0">
+    <table mat-table [dataSource]="draftsDataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="number">
+        <th mat-header-cell *matHeaderCellDef> Number. </th>
+        <td mat-cell *matCellDef="let element"> {{element.number}} </td>
+      </ng-container>
+    
+      <!-- Name Column -->
+      <ng-container matColumnDef="count">
+        <th mat-header-cell *matHeaderCellDef> Count </th>
+        <td mat-cell *matCellDef="let element"> {{element.count}} </td>
+      </ng-container>
+    
+      <!-- Weight Column -->
+      <ng-container matColumnDef="set">
+        <th mat-header-cell *matHeaderCellDef> Set </th>
+        <td mat-cell *matCellDef="let element"> {{element.set}} </td>
+      </ng-container>
+    
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> User </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+  
+    
+      <tr mat-header-row *matHeaderRowDef="boxDisplayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: boxDisplayedColumns;"></tr>
+
+    </table>
+  </mat-card>
+  <mat-card *ngIf="draftsDataSource.length > 0">
+            <mat-card-content>
+                <button mat-flat-button color="primary" (click)="createLottery()">Save</button>
+            </mat-card-content>
+          </mat-card>
+
+
+  <mat-card >
+    <mat-card-header>
+      <mat-card-title>Lottery</mat-card-title>
+    </mat-card-header>
   </mat-card>
 
-
-
-
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
-    <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
-  
-    <!-- Position Column -->
     <ng-container matColumnDef="number">
       <th mat-header-cell *matHeaderCellDef> Number. </th>
       <td mat-cell *matCellDef="let element"> {{element.number}} </td>
@@ -129,3 +171,5 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+
+  
