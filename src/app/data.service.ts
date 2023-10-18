@@ -23,6 +23,7 @@ export class DataService {
       };
     return httpOptions
   }
+  
 
   login(data:any): Observable<any> {
     return this.http.post(apiUrl + '/login/', data);  
@@ -37,6 +38,11 @@ export class DataService {
     let opts = this.getHeader();
     return this.http.get(apiUrl + '/price/', opts); 
 
+  }
+
+  deleteLottery(data:any): Observable<any>{
+    let opts = this.getHeader();
+    return this.http.post(apiUrl + '/delete-lottery/', data, opts);  
   }
 
   createLottery(data:any): Observable<any>{

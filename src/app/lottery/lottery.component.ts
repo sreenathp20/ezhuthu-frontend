@@ -51,7 +51,7 @@ export class LotteryComponent implements OnInit {
     this.getCurrentDate();
     
   }
-  displayedColumns: string[] = ['number', 'count', 'set', 'name', 'date', 'price'];
+  displayedColumns: string[] = ['number', 'count', 'set', 'amount', 'name', 'date', 'price'];
   dataSource = this.lotteries;
 
   getCurrentDate() {
@@ -90,6 +90,14 @@ export class LotteryComponent implements OnInit {
         this.sales += (d.count * 11)
       }else {
         this.sales += (d.count * 10)
+      }
+    }
+    for(let i = 0; i < this.dataSource.length; i++) {
+      let d = this.dataSource[i];
+      if(d.set == 'A' || d.set == 'B' || d.set == 'C') {
+        d.amount = d.count * 11;
+      }else {
+        d.amount = d.count * 10;
       }
     }
   }

@@ -5,6 +5,7 @@ import { DataService } from 'src/app/data.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 
+
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -44,7 +45,15 @@ export class CreateLotteryComponent implements OnInit {
     this.dataService.getLotteries().subscribe(data =>{
       if(data.length > 0){
         this.lotteries = data;
-          this.dataSource = this.lotteries;
+        this.dataSource = this.lotteries;
+        for(let i = 0; i < this.dataSource.length; i++) {
+          let d = this.dataSource[i];
+          if(d.set == 'A' || d.set == 'B' || d.set == 'C') {
+            d.amount = d.count * 11;
+          }else {
+            d.amount = d.count * 10;
+          }
+        }
           
       } 
     })
@@ -77,7 +86,8 @@ export class CreateLotteryComponent implements OnInit {
     }
   }
   boxDisplayedColumns: string[] = ['number', 'count', 'set', 'name'];
-  displayedColumns: string[] = ['number', 'count', 'set', 'name', 'date'];
+  draftsDisplayedColumns: string[] = ['number', 'count', 'set', 'amount', 'name'];
+  displayedColumns: string[] = ['number', 'count', 'set', 'amount', 'name', 'date', '_id'];
   dataSource = this.lotteries;
   boxDataSource: any = [];
   drafts: any = [];
@@ -86,6 +96,28 @@ export class CreateLotteryComponent implements OnInit {
   selectUser(id: any) {
     this.selectedUser = id;
 
+  }
+  alertC(id:any, date: any) {
+    let d = new Date(date);
+    if(d.getHours() >= 15) {
+      d.setDate(d.getDate() + 1);
+    }
+    let dString = d.toISOString().split('T')[0];
+
+    //alert(f);
+    let a = confirm("Delete the lottery!");
+    console.log(a);
+    let data = {id: id, date: dString};
+    if(a) {
+      this.dataService.deleteLottery({data}).subscribe(data =>{
+        if(data.success){
+          this.getLotteries();
+          
+        } 
+        alert(data.message)
+      })
+    }
+    
   }
 
   setType() {
@@ -136,6 +168,10 @@ export class CreateLotteryComponent implements OnInit {
       alert("Please select user");
       return false;
     }
+    if(!this.count) {
+      alert("Please enter count");
+      return false;
+    }
     if(!this.type && this.AGroup.length == 0 && this.ABGroup.length == 0) {
       alert("Please select group, set or box");
       return false;
@@ -183,6 +219,16 @@ export class CreateLotteryComponent implements OnInit {
         let g = this.ABGroup[i];
         this.drafts.push({number: this.number, count: this.count, set: g, name: this.usersDict[this.selectedUser], user: this.selectedUser})
       }
+    }
+
+    for(let i = 0; i < this.drafts.length; i++) {
+      let d = this.drafts[i];
+      if(d.set == 'A' || d.set == 'B' || d.set == 'C') {
+        d.amount = d.count * 11;
+      }else {
+        d.amount = d.count * 10;
+      }
+      this.drafts[i].amount = d.amount;
     }
 
     this.number = '';
