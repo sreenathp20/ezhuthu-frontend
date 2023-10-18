@@ -130,10 +130,15 @@ export class CreateLotteryComponent implements OnInit {
   }
 
   createLottery(): boolean {
-    if(!this.number) {
-      alert("Please enter Number")
-      return false;
+    if(this.number == '0') {
+
+    }else {
+      if(!this.number) {
+        alert("Please enter Number")
+        return false;
+      }
     }
+    
     if(this.type == 'set'  && this.number.toString().length != 3) {
       alert("Number length is wrong for set")
       return false;
@@ -162,10 +167,15 @@ export class CreateLotteryComponent implements OnInit {
       alert("Please enter count")
       return false;
     }
-    if(this.number == '' || !this.number) {
-      alert("Please enter number")
-      return false;
+    if(this.number == '0') {
+
+    }else {
+      if(this.number == '' || !this.number) {
+        alert("Please enter number")
+        return false;
+      }
     }
+    
     if(!this.selectedUser) {
       alert("Please select user")
       return false;
