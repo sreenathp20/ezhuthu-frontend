@@ -69,6 +69,12 @@ export class CreateLotteryComponent implements OnInit {
     })
     this.getLotteries();
     
+    
+  }
+  autoFocus() {
+    if(this.number.toString().length == 3) {
+      document?.getElementById("count")?.focus();
+    }
   }
   boxDisplayedColumns: string[] = ['number', 'count', 'set', 'name'];
   displayedColumns: string[] = ['number', 'count', 'set', 'name', 'date'];

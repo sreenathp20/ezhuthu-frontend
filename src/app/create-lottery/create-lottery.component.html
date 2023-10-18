@@ -10,11 +10,11 @@
     <mat-card-content>
         <mat-form-field [style.width.%]="20">
             <mat-label >Number</mat-label>
-            <input matInput [(ngModel)]="number" maxlength="3" type="number" (change)="boxPreview();">
+            <input matInput [(ngModel)]="number" maxlength="3" type="number" (change)="boxPreview();" (ngModelChange)="autoFocus();">
           </mat-form-field>
           <mat-form-field [style.width.%]="20">
             <mat-label >Count</mat-label>
-            <input matInput [(ngModel)]="count" maxlength="4" type="number" (change)="boxPreview()">
+            <input matInput [(ngModel)]="count" maxlength="4" type="number" (change)="boxPreview()" id="count">
           </mat-form-field>
           <mat-form-field>
             <mat-label>User</mat-label>

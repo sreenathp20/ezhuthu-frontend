@@ -64,6 +64,41 @@ export class CreatePriceComponent implements OnInit {
   displayedColumns: string[] = ['date', 'first', 'second', 'third', 'fourth', 'fifth', 'compliments'];
   boxDataSource: any = [];
 
+  autoFocusCompliments(id: any) {
+    let nextid = id+1;
+    if(this.compliments[id].toString().length == 3) {
+      document?.getElementById('compliments'+nextid)?.focus();
+    }
+  }
+
+  autoFocus(field: any) {
+    if(field == 'first') {
+      if(this.first.toString().length == 3) {
+        document?.getElementById("second")?.focus();
+      }
+    }
+    if(field == 'second') {
+      if(this.second.toString().length == 3) {
+        document?.getElementById("third")?.focus();
+      }
+    }
+    if(field == 'third') {
+      if(this.third.toString().length == 3) {
+        document?.getElementById("fourth")?.focus();
+      }
+    }
+    if(field == 'fourth') {
+      if(this.fourth.toString().length == 3) {
+        document?.getElementById("fifth")?.focus();
+      }
+    }
+    if(field == 'fifth') {
+      if(this.fifth.toString().length == 3) {
+        document?.getElementById("compliments0")?.focus();
+      }
+    }
+  }
+
 
   createPrice(): boolean {
     if(!this.selectedDate) {
