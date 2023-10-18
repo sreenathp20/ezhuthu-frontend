@@ -27,12 +27,15 @@ export class LotteryComponent implements OnInit {
   lotteries: any = [];
   dString: string;
   selectedDate: any;
+  sales: any;
+  price: any;
 
   getLotteries() {
     this.dataService.getLotteries().subscribe(data =>{
       if(data.length > 0){
         this.lotteries = data;
-          this.dataSource = this.lotteries;
+        this.dataSource = this.lotteries;
+        this.getSalesReport();
           
       } 
     })
@@ -69,10 +72,26 @@ export class LotteryComponent implements OnInit {
     this.dataService.getLotteriesByDate(data).subscribe(data =>{
       //if(data.length > 0){
         this.lotteries = data;
-          this.dataSource = this.lotteries;
+        this.dataSource = this.lotteries;
+        this.getSalesReport();
           
       //} 
     })
+  }
+  getSalesReport() {
+    this.price = 0;
+    this.sales = 0;
+    for(let i = 0; i < this.dataSource.length; i++) {
+      let d = this.dataSource[i];
+      if(d.price) {
+        this.price += d.price;
+      }      
+      if(d.set == 'A' || d.set == 'B' || d.set == 'C') {
+        this.sales += (d.count * 11)
+      }else {
+        this.sales += (d.count * 10)
+      }
+    }
   }
 
 
