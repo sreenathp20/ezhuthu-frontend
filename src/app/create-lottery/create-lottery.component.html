@@ -22,7 +22,7 @@
       </mat-form-field>
       <mat-form-field [style.width.%]="25" >
         <mat-label>AB,AC,BC</mat-label>
-        <mat-select  multiple [(ngModel)]="ABGroup" (selectionChange)="boxPreview()">
+        <mat-select  multiple [(ngModel)]="ABGroup" (selectionChange)="boxPreview()" (keydown.enter)="enter('count')">
           <mat-option *ngFor="let topping of ['AB','AC','BC']" [value]="topping">{{topping}}</mat-option>
         </mat-select>
       </mat-form-field>
@@ -34,11 +34,11 @@
       <br/>
         <mat-form-field [style.width.%]="20">
             <mat-label >Number</mat-label>
-            <input matInput [(ngModel)]="number" maxlength="3" type="number"  id="number" (ngModelChange)="autoFocus();boxPreview();">
+            <input matInput [(ngModel)]="number" maxlength="3" type="number"  id="number" (ngModelChange)="autoFocus();boxPreview();" (keydown.enter)="enter('number')">
           </mat-form-field>
           <mat-form-field [style.width.%]="20">
             <mat-label >Count</mat-label>
-            <input matInput [(ngModel)]="count" maxlength="4" type="number" (ngModelChange)="boxPreview()" id="count" (keydown.enter)="enter()">
+            <input matInput [(ngModel)]="count" maxlength="4" type="number" (ngModelChange)="boxPreview()" id="count" (keydown.enter)="enter('count')">
           </mat-form-field>
           <!-- <mat-card>
             <mat-card-content>
@@ -124,6 +124,11 @@
         <th mat-header-cell *matHeaderCellDef> User </th>
         <td mat-cell *matCellDef="let element"> {{element.name}} </td>
       </ng-container>
+
+      <ng-container  matColumnDef="_id">
+        <th mat-header-cell *matHeaderCellDef> Delete </th>
+        <td mat-cell *matCellDef="let element; index as i"> <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete" (click)="deleteC(i);"></mat-icon> </td>
+      </ng-container>
   
     
       <tr mat-header-row *matHeaderRowDef="draftsDisplayedColumns"></tr>
@@ -180,7 +185,7 @@
 
       <ng-container matColumnDef="_id">
         <th mat-header-cell *matHeaderCellDef> Delete </th>
-        <td mat-cell *matCellDef="let element"> <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home" (click)="alertC(element._id, element.date);"></mat-icon> </td>
+        <td mat-cell *matCellDef="let element"> <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete" (click)="alertC(element._id, element.date);"></mat-icon> </td>
       </ng-container>
 
       

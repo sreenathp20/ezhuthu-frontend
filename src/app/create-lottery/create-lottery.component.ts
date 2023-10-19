@@ -85,8 +85,8 @@ export class CreateLotteryComponent implements OnInit {
       document?.getElementById("count")?.focus();
     }
   }
-  boxDisplayedColumns: string[] = ['number', 'count', 'set', 'name'];
-  draftsDisplayedColumns: string[] = ['number', 'count', 'set', 'amount', 'name'];
+  boxDisplayedColumns: string[] = ['number', 'count', 'set', 'name',];
+  draftsDisplayedColumns: string[] = ['number', 'count', 'set', 'amount', 'name', '_id'];
   displayedColumns: string[] = ['number', 'count', 'set', 'amount', 'name', 'date', '_id'];
   dataSource = this.lotteries;
   boxDataSource: any = [];
@@ -96,6 +96,11 @@ export class CreateLotteryComponent implements OnInit {
   selectUser(id: any) {
     this.selectedUser = id;
 
+  }
+  deleteC(idx: any) {
+    //alert(idx);
+    this.drafts.splice(idx, 1);
+    this.draftsDataSource = [...this.drafts];
   }
   alertC(id:any, date: any) {
     let d = new Date(date);
@@ -163,7 +168,11 @@ export class CreateLotteryComponent implements OnInit {
     }
   }
 
-  enter(): boolean {
+  enter(field:any): boolean {
+    if(field == 'number') {
+      document?.getElementById("count")?.focus();
+      return false;
+    }
     if(!this.selectedUser) {
       alert("Please select user");
       return false;
