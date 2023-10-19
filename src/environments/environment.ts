@@ -7,6 +7,7 @@ export const environment = {
     apiUrl:'http://127.0.0.1:8000/api',
     //apiUrl:'http://16.171.23.105:8000/api',
     COT: 15, // cut off time
+    name: 'local'
     
   };
 

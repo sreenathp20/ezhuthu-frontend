@@ -6,6 +6,7 @@ export const environment = {
     production: true,
     apiUrl:'http://16.171.23.105:8000/api',
     COT: 15, // cut off time
+    name: 'Kerala'
   };
   
   /*

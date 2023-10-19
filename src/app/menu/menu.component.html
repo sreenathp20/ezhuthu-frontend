@@ -1,5 +1,5 @@
 <mat-card>
-    <button mat-button [matMenuTriggerFor]="menu">Menu</button>
+    <button mat-button [matMenuTriggerFor]="menu">{{name}}</button>
 <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="navigate('home')">Home</button>
     <button mat-menu-item (click)="navigate('lottery')">Lottery</button>
