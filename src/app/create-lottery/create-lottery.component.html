@@ -137,7 +137,7 @@
     </table>
   </mat-card>
   <mat-card *ngIf="draftsDataSource.length > 0">
-            <mat-card-content>
+            <mat-card-content *ngIf="save">
                 <button mat-flat-button color="primary" (click)="createLottery()">Save</button>
             </mat-card-content>
           </mat-card>

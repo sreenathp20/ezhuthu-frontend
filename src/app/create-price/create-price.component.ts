@@ -52,6 +52,11 @@ export class CreatePriceComponent implements OnInit {
     if (!this.storageService.isLoggedIn()) {
       this.router.navigate(['/login'])
     }
+    this.getPrice();
+    
+    
+  }
+  getPrice() {
     this.dataService.getPrice().subscribe(data =>{
       if(data.length > 0){
           this.price = data;
@@ -59,7 +64,6 @@ export class CreatePriceComponent implements OnInit {
 
       } 
     })
-    
   }
   displayedColumns: string[] = ['date', 'first', 'second', 'third', 'fourth', 'fifth', 'compliments'];
   boxDataSource: any = [];
@@ -166,6 +170,7 @@ export class CreatePriceComponent implements OnInit {
         this.fourth = '';
         this.fifth = '';
         this.compliments = new Array(30);
+        this.getPrice();
         
       } else {
         alert(data.message)

@@ -43,7 +43,7 @@ export class CreateLotteryComponent implements OnInit {
 
   getLotteries() {
     this.dataService.getLotteries().subscribe(data =>{
-      if(data.length > 0){
+      //if(data.length > 0){
         this.lotteries = data;
         this.dataSource = this.lotteries;
         for(let i = 0; i < this.dataSource.length; i++) {
@@ -55,7 +55,7 @@ export class CreateLotteryComponent implements OnInit {
           }
         }
           
-      } 
+      //} 
     })
   }
   
@@ -92,6 +92,7 @@ export class CreateLotteryComponent implements OnInit {
   boxDataSource: any = [];
   drafts: any = [];
   draftsDataSource:any = [];
+  save: boolean = true;
 
   selectUser(id: any) {
     this.selectedUser = id;
@@ -299,6 +300,7 @@ export class CreateLotteryComponent implements OnInit {
     //   alert("Please select user")
     //   return false;
     // }
+    this.save = false;
     let set;
     let data:any = [];
     // if(this.type == 'set'){
@@ -326,6 +328,7 @@ export class CreateLotteryComponent implements OnInit {
 
     console.log(data);
     this.dataService.createLottery({data}).subscribe(data =>{
+      this.save = true;
       if(data.success){
         this.number = '';
         this.count = '';
@@ -341,7 +344,9 @@ export class CreateLotteryComponent implements OnInit {
       } else {
         alert(data.message)
       }
-    })
+    },err => {
+      this.save = true;
+    },)
     return true;
 
   }
